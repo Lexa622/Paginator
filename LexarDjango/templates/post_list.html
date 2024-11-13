@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    <h1>Список постов</h1>
+    <ul>
+        {% for post in page_posts %}
+            <li>
+                {{ post.title }} ({{ post.created_at }})
+                <p>{{ post.content }}</p>
+            </li>
+        {% empty %}
+            Нет постов.
+        {% endfor %}
+    </ul>
+    <!-- показываем пагинатор -->
+    <div class="pagination">
+        <p>Страницы:</p>
+        <span class="step-links">
+            {% if page_posts.has_previous %}
+                <a href="?page=1">На первую страницу</a>
+                <a href="?page={{ page_posts.previous_page_number }}">На предидущую страницу</a>
+            {% endif %}
+            <span class="current">
+                Страница № {{ page_posts.number }}/{{ paginator.num_pages }}
+            </span>
+            {% if page_posts.has_next %}
+                <a href="?page={{ page_posts.next_page_number }}">На следующую страницу</a>
+                <a href="?page={{ page_posts.paginator.num_pages }}">На последнюю страницу</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
+    <form action="" method="get">
+        <label for="per_page">Элементы на странице:</label>
+        <select id="per_page" name="per_page">
+            <option value="">--</option>
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+        </select>
+        <button type="submit" class="paginator_bt">Применить</button>
+    </form>
+</body>
+</html>
